@@ -2,17 +2,18 @@
 
 namespace App\Console\Commands;
 
-use App\RandomEmptyClass;
+use App\Connector;
+use App\Request;
 use Illuminate\Console\Command;
 
-class TestCommand extends Command
+class SaloonTestCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:test';
+    protected $signature = 'app:saloon-test';
 
     /**
      * The console command description.
@@ -26,7 +27,11 @@ class TestCommand extends Command
      */
     public function handle(): int
     {
-        $class = new RandomEmptyClass;
+        $connector = new Connector;
+
+        // Note: If multiple requests are made, also have a look at the queue worker process' opened file handles,
+        //         and you can see that it doesn't close the ones opened by these requests.
+        $connector->send(new Request);
 
         ray()->pause();
 

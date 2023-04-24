@@ -2,17 +2,17 @@
 
 namespace App\Console\Commands;
 
-use App\RandomEmptyClass;
+use App\Jobs\TestJob;
 use Illuminate\Console\Command;
 
-class TestCommand extends Command
+class QueueTestJobCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:test';
+    protected $signature = 'app:queue-test-job';
 
     /**
      * The console command description.
@@ -26,9 +26,7 @@ class TestCommand extends Command
      */
     public function handle(): int
     {
-        $class = new RandomEmptyClass;
-
-        ray()->pause();
+        TestJob::dispatch();
 
         return 0;
     }

@@ -9,14 +9,14 @@ use Saloon\Contracts\PendingRequest;
 
 class Connector extends \Saloon\Http\Connector
 {
-    protected \Closure $closure;
+    protected Closure $closure;
 
     public function __construct()
     {
         // This doesn't work.
-        //$this->closure = function () {
-        //    // Random Closure goes here. :)
-        //};
+        $this->closure = function () {
+            // Random Closure goes here. :)
+        };
 
         // This doesn't work (see next snippet of a wrapped class).
         //$this->closure = (function () {
@@ -42,11 +42,11 @@ class Connector extends \Saloon\Http\Connector
         // This also works.
         // Note: On top of the previous example, I'm providing the explicit anonymous class instance as the bind target.
 
-        $wrapper = new class {};
-
-        $this->closure = Closure::bind(function () {
-            // Random Closure goes here. :)
-        }, $wrapper, $wrapper);
+        //$wrapper = new class {};
+        //
+        //$this->closure = Closure::bind(function () {
+        //    // Random Closure goes here. :)
+        //}, $wrapper, $wrapper);
     }
 
     public function resolveBaseUrl(): string
@@ -60,12 +60,12 @@ class Connector extends \Saloon\Http\Connector
         // Doing the same but on a new instance of a Request or Connector, it does work, however.
         // This cause the Connector to not destruct, and therefore not kill the Guzzle stuff (keeping file handles open).
 
-        // Doesn't work without my upcoming fix.
+        // Doesn't work.
         //$pendingRequest->middleware()->onRequest(function (PendingRequest $pendingRequest): void {
         //
         //});
 
-        // Works without my upcoming fix.
+        // Works.
         $pendingRequest->middleware()->onRequest(Closure::bind(function () {
             // Random Closure goes here. :)
         }, new class {}));

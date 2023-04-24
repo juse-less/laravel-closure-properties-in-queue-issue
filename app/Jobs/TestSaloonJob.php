@@ -4,13 +4,11 @@ namespace App\Jobs;
 
 use App\Connector;
 use App\Request;
-use GuzzleHttp\Promise\Utils;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Saloon\Contracts\PendingRequest;
 
 class TestSaloonJob implements ShouldQueue
 {
@@ -25,24 +23,10 @@ class TestSaloonJob implements ShouldQueue
     public function handle(): void
     {
         $connector = new Connector;
-        //$connector->middleware()->onRequest(function (PendingRequest $pendingRequest): void {
-        //
-        //});
 
-        $promises = [];
-
-        for ($i = 0; $i < 5; $i++) {
-            $request = new Request;
-            //$request->middleware()->onRequest(function (PendingRequest $pendingRequest): void {
-            //
-            //});
-
-            $promises[] = $connector->sendAsync($request);
-        }
-
-        ray()->pause();
-
-        Utils::all($promises)->wait();
+        // Note: If multiple requests are made, also have a look at the queue worker process' opened file handles,
+        //         and you can see that it doesn't close the ones opened by these requests.
+        $connector->send(new Request);
 
         ray()->pause();
     }

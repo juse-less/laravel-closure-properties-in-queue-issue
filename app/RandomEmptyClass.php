@@ -8,7 +8,7 @@ use Closure;
 
 class RandomEmptyClass
 {
-    protected \Closure $closure;
+    protected Closure $closure;
 
     public function __construct()
     {
