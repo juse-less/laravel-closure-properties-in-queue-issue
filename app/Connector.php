@@ -13,7 +13,7 @@ class Connector extends \Saloon\Http\Connector
 
     public function __construct()
     {
-        // This doesn't work,
+        // This doesn't work.
         //$this->closure = function () {
         //    // Random Closure goes here. :)
         //};
