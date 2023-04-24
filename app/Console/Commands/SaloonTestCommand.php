@@ -27,12 +27,23 @@ class SaloonTestCommand extends Command
      */
     public function handle(): int
     {
+        // Note: Because the process terminates after the job, the classes are destructed.
+        //       Meaning, also the open file handles are closed.
+
+        // Note: Also have a look at the queue worker process' opened file handles,
+        //         and you can see that it doesn't close the ones opened by these requests.
+
         $connector = new Connector;
 
-        // Note: If multiple requests are made, also have a look at the queue worker process' opened file handles,
-        //         and you can see that it doesn't close the ones opened by these requests.
-        $connector->send(new Request);
+        for ($i = 0; $i < 5; $i++) {
+            $connector->send(new Request);
 
+            ray('Request sent');
+            ray()->pause();
+        }
+
+
+        ray('End of command');
         ray()->pause();
 
         return 0;

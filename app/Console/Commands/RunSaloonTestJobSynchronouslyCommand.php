@@ -26,6 +26,12 @@ class RunSaloonTestJobSynchronouslyCommand extends Command
      */
     public function handle(): int
     {
+        // Note: Because the process terminates after the job, the classes are destructed.
+        //       Meaning, also the open file handles are closed.
+
+        // Note: Also have a look at the queue worker process' opened file handles,
+        //         and you can see that it doesn't close the ones opened by these requests.
+
         TestSaloonJob::dispatchSync();
 
         return 0;

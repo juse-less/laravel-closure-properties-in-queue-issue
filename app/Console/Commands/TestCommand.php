@@ -26,8 +26,16 @@ class TestCommand extends Command
      */
     public function handle(): int
     {
-        $class = new RandomEmptyClass;
+        // Note: Because the process terminates after the job, the classes are destructed.
 
+        for ($i = 0; $i < 5; $i++) {
+            $class = new RandomEmptyClass;
+
+            ray('class created');
+            ray()->pause();
+        }
+
+        ray('End of command');
         ray()->pause();
 
         return 0;

@@ -21,8 +21,14 @@ class TestJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $class = new RandomEmptyClass;
+        for ($i = 0; $i < 5; $i++) {
+            $class = new RandomEmptyClass;
 
+            ray('class created');
+            ray()->pause();
+        }
+
+        ray('End of job');
         ray()->pause();
     }
 }
