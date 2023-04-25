@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Connector;
 use App\Request;
+use GuzzleHttp\Promise\Utils;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -25,17 +26,40 @@ class TestSaloonJob implements ShouldQueue
         // Note: Also have a look at the queue worker process' opened file handles,
         //         and you can see that it doesn't close the ones opened by these requests.
 
+        // Note: Using Async it gets even worse.
+
+        $this->testSync();
+        //$this->testAsync();
+
+        ray('End of job');
+        ray()->pause();
+    }
+
+    protected function testSync(): void
+    {
         $connector = new Connector;
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($requests = 0; $requests < 5; $requests++) {
             $connector->send(new Request);
 
             ray('Request sent');
             ray()->pause();
         }
+    }
 
+    protected function testAsync(): void
+    {
+        $connector = new Connector;
 
-        ray('End of job');
-        ray()->pause();
+        $promises = [];
+
+        for ($requests = 0; $requests < 5; $requests++) {
+            $promises[] = $connector->sendAsync(new Request);
+
+            ray('Request sent');
+            ray()->pause();
+        }
+
+        Utils::all($promises)->wait();
     }
 }

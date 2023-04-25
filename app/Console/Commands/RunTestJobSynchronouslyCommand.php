@@ -26,9 +26,11 @@ class RunTestJobSynchronouslyCommand extends Command
      */
     public function handle(): int
     {
-        // Note: Because the process terminates after the job, the classes are destructed.
+        // Note: Because the process terminates after the jobs, the classes are destructed.
 
-        TestJob::dispatchSync();
+        for ($jobs = 0; $jobs < 5; $jobs++) {
+            TestJob::dispatchSync();
+        }
 
         return 0;
     }

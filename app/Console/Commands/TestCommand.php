@@ -29,12 +29,7 @@ class TestCommand extends Command
         // Note: Because the process terminates after the job, the classes are destructed.
 
         for ($jobs = 0; $jobs < 5; $jobs++) {
-            for ($instantiations = 0; $instantiations < 5; $instantiations++) {
-                $class = new RandomEmptyClass;
-
-                ray('class created');
-                ray()->pause();
-            }
+            $this->test();
 
             ray('End of job');
             ray()->pause();
@@ -44,5 +39,15 @@ class TestCommand extends Command
         ray()->pause();
 
         return 0;
+    }
+
+    protected function test(): void
+    {
+        for ($instantiations = 0; $instantiations < 5; $instantiations++) {
+            $class = new RandomEmptyClass;
+
+            ray('class created');
+            ray()->pause();
+        }
     }
 }

@@ -8,14 +8,14 @@ use Closure;
 
 class RandomEmptyClass
 {
-    protected Closure $closure;
+    //protected Closure $closure;
 
     public function __construct()
     {
         // This doesn't work.
-        $this->closure = function () {
-            // Random Closure goes here. :)
-        };
+        //$this->closure = function () {
+        //    // Random Closure goes here. :)
+        //};
 
         // This doesn't work (see next snippet of a wrapped class).
         //$this->closure = (function () {
