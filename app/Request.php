@@ -25,14 +25,14 @@ class Request extends \Saloon\Http\Request
         // However, this Request is not destructed.
 
         // Doesn't work.
-        //$pendingRequest->middleware()->onRequest(function (PendingRequest $pendingRequest): void {
-        //
-        //});
+        $pendingRequest->middleware()->onRequest(function (PendingRequest $pendingRequest): void {
+
+        });
 
         // Works.
-        $pendingRequest->middleware()->onRequest(Closure::bind(function () {
-            // Random Closure goes here. :)
-        }, new class {}));
+        //$pendingRequest->middleware()->onRequest(Closure::bind(function () {
+        //    // Random Closure goes here. :)
+        //}, new class {}));
     }
 
     public function __destruct()

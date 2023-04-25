@@ -35,13 +35,17 @@ class SaloonTestCommand extends Command
 
         $connector = new Connector;
 
-        for ($i = 0; $i < 5; $i++) {
-            $connector->send(new Request);
+        for ($jobs = 0; $jobs < 5; $jobs++) {
+            for ($requests = 0; $requests < 5; $requests++) {
+                $connector->send(new Request);
 
-            ray('Request sent');
+                ray('Request sent');
+                ray()->pause();
+            }
+
+            ray('End of job');
             ray()->pause();
         }
-
 
         ray('End of command');
         ray()->pause();

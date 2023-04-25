@@ -61,14 +61,14 @@ class Connector extends \Saloon\Http\Connector
         // This cause the Connector to not destruct, and therefore not kill the Guzzle stuff (keeping file handles open).
 
         // Doesn't work.
-        //$pendingRequest->middleware()->onRequest(function (PendingRequest $pendingRequest): void {
-        //
-        //});
+        $pendingRequest->middleware()->onRequest(function (PendingRequest $pendingRequest): void {
+
+        });
 
         // Works.
-        $pendingRequest->middleware()->onRequest(Closure::bind(function () {
-            // Random Closure goes here. :)
-        }, new class {}));
+        //$pendingRequest->middleware()->onRequest(Closure::bind(function () {
+        //    // Random Closure goes here. :)
+        //}, new class {}));
     }
 
     public function __destruct()

@@ -26,7 +26,9 @@ class QueueTestJobCommand extends Command
      */
     public function handle(): int
     {
-        TestJob::dispatch();
+        for ($jobs = 0; $jobs < 5; $jobs++) {
+            TestJob::dispatch();
+        }
 
         return 0;
     }
